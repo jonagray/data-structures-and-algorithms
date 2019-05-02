@@ -8,9 +8,11 @@ Write a function named getCourseKeys that takes in the courseInfo object and ret
 For example: (['name', 'duration', 'topics', 'finalExam']).
 ------------------------------------------------------------------------------------------------ */
 
-const courseInfo = { name: 'Code 301', duration: { dayTrack: '4 weeks', eveningTrack: '8 weeks'},
+const courseInfo = {
+  name: 'Code 301', duration: { dayTrack: '4 weeks', eveningTrack: '8 weeks' },
   topics: ['SMACSS', 'APIs', 'NodeJS', 'SQL', 'jQuery', 'functional programming'],
-  finalExam: true };
+  finalExam: true
+};
 
 const getCourseKeys = (obj) => {
   // Solution code here...
@@ -111,6 +113,13 @@ The input and output of this function are the same as the input and output from 
 
 const hasChildrenEntries = (arr, character) => {
   // Solution code here...
+  let children = 0;
+  Object.values(arr).forEach(person => {
+    if (person.name === character) {
+      children = person.children.length > 0 ? true : false;
+    }
+  })
+  return children;
 };
 
 /* ------------------------------------------------------------------------------------------------
@@ -121,6 +130,22 @@ Write a function named totalCharacters that takes in an array and returns the nu
 
 const totalCharacters = (arr) => {
   // Solution code here...
+  let allCharacters = [];
+  arr.forEach(obj => {
+    allCharacters.push(obj.name);
+    if (obj.spouse !== null && allCharacters.includes(obj.spouse) === false) {
+      allCharacters.push(obj.spouse);
+    }
+    if (obj.children !== []) {
+      for (let i = 0; i < obj.children.length; i++) {
+        if (allCharacters.includes(obj.children[i]) === false) {
+          allCharacters.push(obj.children[i]);
+        }
+      }
+    }
+
+  })
+  return allCharacters.length;
 };
 
 /* ------------------------------------------------------------------------------------------------
@@ -176,13 +201,13 @@ Run your tests from the console: jest challenges-06.test.js
 
 describe('Testing challenge 1', () => {
   test('It should return the keys from an object', () => {
-    expect(getCourseKeys(courseInfo)).toStrictEqual([ 'name', 'duration', 'topics', 'finalExam' ]);
+    expect(getCourseKeys(courseInfo)).toStrictEqual(['name', 'duration', 'topics', 'finalExam']);
   });
 });
 
 describe('Testing challenge 2', () => {
   test('It should return an array of the names of the houses', () => {
-    expect(getHouses(characters)).toStrictEqual([ 'Stark', 'Arryn', 'Lannister', 'Targaryen', 'Tyrell', 'Stark', 'Snow' ]);
+    expect(getHouses(characters)).toStrictEqual(['Stark', 'Arryn', 'Lannister', 'Targaryen', 'Tyrell', 'Stark', 'Snow']);
     expect(getHouses(characters).length).toStrictEqual(7);
   });
 });
@@ -215,13 +240,13 @@ describe('Testing challenge 5', () => {
 
 describe('Testing challenge 6', () => {
   test('It should return an object for each house containing the name and size', () => {
-    expect(houseSize(characters)).toStrictEqual([ { house: 'Stark', members: 7 }, { house: 'Arryn', members: 3 }, { house: 'Lannister', members: 5 }, { house: 'Targaryen', members: 5 }, { house: 'Tyrell', members: 4 }, { house: 'Stark', members: 2 }, { house: 'Snow', members: 1 } ]);
+    expect(houseSize(characters)).toStrictEqual([{ house: 'Stark', members: 7 }, { house: 'Arryn', members: 3 }, { house: 'Lannister', members: 5 }, { house: 'Targaryen', members: 5 }, { house: 'Tyrell', members: 4 }, { house: 'Stark', members: 2 }, { house: 'Snow', members: 1 }]);
     expect(houseSize(characters).length).toStrictEqual(7);
   });
 });
 
 describe('Testing challenge 7', () => {
   test('It should not include any deceased spouses', () => {
-    expect(houseSurvivors(characters)).toStrictEqual([ { house: 'Stark', members: 6 }, { house: 'Arryn', members: 2 }, { house: 'Lannister', members: 4 }, { house: 'Targaryen', members: 4 }, { house: 'Tyrell', members: 3 }, { house: 'Stark', members: 2 }, { house: 'Snow', members: 1 } ]);
+    expect(houseSurvivors(characters)).toStrictEqual([{ house: 'Stark', members: 6 }, { house: 'Arryn', members: 2 }, { house: 'Lannister', members: 4 }, { house: 'Targaryen', members: 4 }, { house: 'Tyrell', members: 3 }, { house: 'Stark', members: 2 }, { house: 'Snow', members: 1 }]);
   });
 });
